@@ -19,7 +19,7 @@ module Api::V1
       @list = List.new(list_params)
 
       if @list.save
-        render json: @list, status: :created, location: @list
+        render json: @list, status: :created
       else
         render json: @list.errors, status: :unprocessable_entity
       end
@@ -37,6 +37,11 @@ module Api::V1
     # DELETE /lists/1
     def destroy
       @list.destroy
+      if @list.destroy
+        head :no_content, status: :ok
+      else 
+        render json: @list.errors, status: :unprocessable_entity
+      end
     end
 
     private
